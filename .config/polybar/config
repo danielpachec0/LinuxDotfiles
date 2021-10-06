@@ -1,0 +1,717 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+;background = ${xrdb:color0:#222}
+background = #222
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+[bar/bar]
+;monitor = ${env:MONITOR:HDMI-1}
+width = 100%
+height = 27
+;offset-x = 1%
+;offset-y = 1%
+
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+;border-size = 4
+;border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 0
+module-margin-right = 0
+
+;font-0 = fixed:pixelsize=10;1
+;font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+;font-2 = siji:pixelsize=10;1
+
+font-0 = "Ubuntu Nerd Font:size=12;2"
+
+
+tray-position = left
+tray-padding = 2
+tray-offset-x = 0
+tray-offset-y = 0
+tray-scale = 1.0
+tray-detached = false
+tray-maxsize = 16
+
+
+#############################################
+
+modules-left = i3
+modules-center =  date
+modules-right =   menu sep xkeyboard sep pulseaudio sep battery sep powermenu
+
+
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+
+
+#====AUXBAR===============================================
+
+[bar/sensors]
+width = "450px"
+height = "27"
+offset-x = "1250"
+offset-y = "0"
+radius = "0"
+radius-top = "0"
+radius-bottom = "0"
+
+background = "${colors.background}"
+foreground = "${colors.foreground}"
+
+font-0 = "Ubuntu Nerd Font:size=12;2"
+
+## hey dummy this is probably what youre looking for
+padding-left = 0px
+padding-right = 0px
+
+module-margin-left =
+module-margin-right =
+
+
+
+modules-right = cpu sep temperature sep sep memory 
+
+override-redirect = true
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+under-line-size = 1
+under-line-color = ${color.black}
+
+
+enable-ipc = true
+
+#==SEP====================================================
+
+[module/sep]
+type = custom/text
+content = "  "
+
+#==MENU====================================================
+[module/menu]
+type = custom/text
+content = ""
+content-foreground = ${color.foreground}
+content-background = ${color.background-alt}
+click-left = sh ~/.config/polybar/createSensors.sh
+
+#==Power menu==============================================
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = false
+
+label-open = "" 
+label-exec = pkill -9 -e -f "polybar sensors" &
+label-open-background = ${color.background}
+label-open-foreground = ${color.red}
+label-close = ""
+label-close-background = ${color.background}
+label-close-foreground = ${color.foreground}
+label-separator = "  "
+label-separator-background = ${color.background}
+label-separator-foreground = ${color.foreground}
+
+# Serious & monochromatic
+
+# menu-0-0-background = ${color.background}
+# menu-0-0-foreground = ${color.foreground}
+# menu-0-1-background = ${color.background}
+# menu-0-1-foreground = ${color.foreground}
+# menu-0-2-background = ${color.background}
+# menu-0-2-foreground = ${color.foreground}
+# menu-0-3-background = ${color.background}
+# menu-0-3-foreground = ${color.foreground}
+# menu-0-4-background = ${color.background}
+# menu-0-4-foreground = ${color.foreground}
+
+# Playful & polychromatic
+
+menu-0-0-background = ${color.background}
+menu-0-0-foreground = ${color.red}
+menu-0-1-background = ${color.background}
+menu-0-1-foreground = ${color.yellow}
+menu-0-2-background = ${color.background}
+menu-0-2-foreground = ${color.blue}
+menu-0-3-background = ${color.background}
+menu-0-3-foreground = ${color.green}
+menu-0-4-background = ${color.background}
+menu-0-4-foreground = ${color.magenta}
+
+menu-0-4 = "  Shutdown"
+menu-0-4-exec = amixer set Master mute & systemctl poweroff &
+menu-0-3 = "  Reboot"
+menu-0-3-exec = amixer set Master mute & systemctl reboot &
+menu-0-2 = "  Logout"
+menu-0-2-exec = amixer set Master mute & systemctl logout &
+menu-0-1 = " ⏾ Sleep "
+menu-0-1-exec = amixer set Master mute & systemctl suspend &
+menu-0-0 = " Lock "
+menu-0-0-exec = ~/.config/rofi/scripts/i3lock.sh &
+
+#==Date==============================================
+
+[module/date]
+type = internal/date
+
+; Seconds to sleep between updates
+; Default: 1.0
+interval = 5
+
+; See "https://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+date = %d/%m/%Y
+
+; Optional time format
+time = %H:%M
+
+; if `date-alt` or `time-alt` is defined, clicking
+; the module will toggle between formats
+date-alt = %A, %d %B %Y
+time-alt = %H:%M:%S
+
+; Available tags:
+;   <label> (default)
+format = <label>
+#format-background = #55ff3399
+#format-foreground = #fff
+
+; Available tokens:
+;   %date%
+;   %time%
+; Default: %date%
+label = %date% %time%
+label-font = 3
+
+#==I3==============================================
+
+[module/i3]
+type = internal/i3
+
+ws-num = 8; 
+show-all = true;
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+
+# label-focused = %icon%
+# label-unfocused = %icon%
+# label-urgent = %icon%
+# label-visible = %icon%
+
+format = <label-state> <label-mode>
+
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = false
+
+label-mode-padding = 1 # spacing between icons
+label-mode-foreground = ${color.foreground-alt}
+label-mode-background = ${color.background}
+
+label-mode-underline = ${color.background}
+label-mode-overline = ${color.background}
+
+
+; focused = Active workspace on focused monitor
+label-focused =%icon%
+label-focused-foreground = #777
+label-focused-background = ${color.background}
+label-focused-padding = 1 # spacing between icons
+
+
+
+
+label-focused-underline = ${color.background}
+label-focused-overline = ${color.background}
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused =%icon%
+label-unfocused-padding = 1 # spacing between icons
+label-unfocused-foreground = ${color.background-alt}
+
+label-unfocused-underline = ${color.background}
+label-unfocused-overline = ${color.background}
+
+; visible = Active workspace on unfocused monitor
+label-visible =
+label-visible-padding = ${self.label-focused-padding}
+label-visible-foreground = ${color.green}
+label-visible-background = ${color.background}
+
+label-visible-underline = ${color.background}
+label-visible-overline = ${color.background}
+
+; urgent = Workspace with urgency hint set
+label-urgent =%icon%
+label-urgent-foreground = ${color.alert}
+label-urgent-background = ${color.background}
+label-urgent-padding = 1 # spacing between icons
+
+label-urgent-underline = ${color.background}
+label-urgent-overline = ${color.background}
+
+; Separator in between workspaces
+; label-separator = |
+
+; Set the scroll cycle direction 
+; Default: true
+reverse-scroll = false
+
+line-overline-size = 2
+line-underline-size = 2
+line-overline-color = ${color.background}
+line-underline-color = ${color.background}
+
+#==Sound==============================================
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+sink = alsa_output.pci-0000_12_00.3.analog-stereo
+
+; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+; Default: true
+use-ui-max = true
+
+; Interval for volume increase/decrease (in percent points)
+; Default: 5
+interval = 5
+
+; Available tags:
+;   <label-volume> (default)
+;   <ramp-volume>
+;   <bar-volume>
+format-volume = <ramp-volume> <label-volume>
+
+; Available tags:
+;   <label-muted> (default)
+;   <ramp-volume>
+;   <bar-volume>
+;format-muted = <label-muted>
+
+; Available tokens:
+;   %percentage% (default)
+;   %decibels%
+;label-volume = %percentage%%
+
+; Available tokens:
+;   %percentage% (default)
+;   %decibels%
+label-muted = ﱝ 
+label-muted-foreground = #666
+
+; Only applies if <ramp-volume> is used
+ramp-volume-0 =
+ramp-volume-1 =
+ramp-volume-2 =
+
+; Right and Middle click
+click-right = pavucontrol
+; click-middle = 
+
+
+#==BATTERY==============================================
+
+[module/battery]
+type = internal/battery
+
+; This is useful in case the battery never reports 100% charge
+;full-at = 99
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+
+; If an inotify event haven't been reported in this many
+; seconds, manually poll for new values.
+;
+; Needed as a fallback for systems that don't report events
+; on sysfs/procfs.
+;
+; Disable polling by setting the interval to 0.
+;
+; Default: 5
+poll-interval = 5
+; see "man date" for details on how to format the time string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+; Default: %H:%M:%S
+time-format = %H:%M
+
+; Available tags:
+;   <label-charging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-charging>
+format-charging =  <label-charging>
+
+; Available tags:
+;   <label-discharging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-discharging>
+format-discharging = <ramp-capacity> <label-discharging>
+
+; Available tags:
+;   <label-full> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;format-full = <ramp-capacity> <label-full>
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+;   %time%
+;   %consumption% (shows current charge rate in watts)
+label-charging = %percentage%%
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+;   %time%
+;   %consumption% (shows current discharge rate in watts)
+label-discharging = %percentage%%
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+label-full =  Full
+
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; Only applies if <bar-capacity> is used
+bar-capacity-width = 10
+
+
+
+#==CPU==============================================
+
+[module/cpu]
+type = internal/cpu
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label> 
+
+; Available tokens:
+;   %percentage% (default) - total cpu load averaged over all cores
+;   %percentage-sum% - Cumulative load on all cores
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label = ﬙ %percentage%%
+
+#==MEMORY==============================================
+
+[module/memory]
+type = internal/memory
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 3
+
+; Available tags:
+;   <label> (default)
+;   <bar-used>
+;   <bar-free>
+;   <ramp-used>
+;   <ramp-free>
+;   <bar-swap-used>
+;   <bar-swap-free>
+;   <ramp-swap-used>
+;   <ramp-swap-free>
+format = <label> 
+
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;   %percentage_swap_used%
+;   %percentage_swap_free%
+;   %mb_swap_total%
+;   %mb_swap_free%
+;   %mb_swap_used%
+;   %gb_swap_total%
+;   %gb_swap_free%
+;   %gb_swap_used%
+
+label =  %percentage_used%%
+
+; Only applies if <bar-used> is used
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+; Only applies if <ramp-used> is used
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-5 = ▆
+ramp-used-6 = ▇
+ramp-used-7 = █
+
+; Only applies if <ramp-free> is used
+ramp-free-0 = ▁
+ramp-free-1 = ▂
+ramp-free-2 = ▃
+ramp-free-3 = ▄
+ramp-free-4 = ▅
+ramp-free-5 = ▆
+ramp-free-6 = ▇
+ramp-free-7 = █
+
+#==TEMPERATURE==============================================
+
+[module/temperature]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+;hwmon-path = /sys/devices/virtual/thermal/thermal_zone0/hwmon1/temp1_input
+
+; Base temperature for where to start the ramp (in degrees celsius)
+; Default: 0
+base-temperature = 20
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+warn-temperature = 80
+
+; Whether or not to show units next to the temperature tokens (°C, °F)
+; Default: true
+units = true
+
+; Available tags:
+;   <label> (default)
+;   <ramp>
+format = <label>
+
+; Available tags:
+;   <label-warn> (default)
+;   <ramp>
+format-warn = <label-warn>
+
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label = %temperature-c%
+
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label-warn = TEMP %temperature-c%
+label-warn-foreground = #f00
+
+; Requires the <ramp> tag
+; The icon selection will range from `base-temperature` to `warn-temperature`,
+; temperatures at and above `warn-temperature` will use the last icon
+; and temperatures at and below `base-temperature` will use `ramp-0`. 
+; All other icons are distributed evenly between the two temperatures.
+ramp-0 = A
+ramp-1 = B
+ramp-2 = C
+ramp-foreground = #55
+
+#==NETWORK==============================================
+
+[module/network]
+type = internal/network
+; Name of the network interface to display. You can get the names of the
+; interfaces on your machine with `ip link`
+; Wireless interfaces often start with `wl` and ethernet interface with `eno` or `eth`
+interface = wlp4s0
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 3.0
+
+; Test connectivity every Nth update
+; A value of 0 disables the feature
+; NOTE: Experimental (needs more testing)
+; Default: 0
+;ping-interval = 3
+
+; @deprecated: Define min width using token specifiers (%downspeed:min% and %upspeed:min%)
+; Minimum output width of upload/download rate
+; Default: 3
+udspeed-minwidth = 5
+
+; Accumulate values from all interfaces
+; when querying for up/downspeed rate
+; Default: false
+accumulate-stats = true
+
+; Consider an `UNKNOWN` interface state as up.
+; Some devices like USB network adapters have 
+; an unknown state, even when they're running
+; Default: false
+unknown-as-up = true
+
+#==KEYBOARD==============================================
+
+[module/xkeyboard]
+type = internal/xkeyboard
+
+; List of indicators to ignore
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+
+; Available tags:
+;   <label-layout> (default)
+;   <label-indicator> (default)
+format = <label-layout>
+format-spacing = 0
+
+; Available tokens:
+;   %layout%
+;   %name%
+;   %number%
+;   %icon%
+;   %variant% (unreleased)
+; Default: %layout%
+label-layout = %layout%
+label-layout-padding = 2
+#label-layout-background = #bc99ed
+#label-layout-foreground = #000
+
+; Available tokens:
+;   %name%
+; Default: %name%
+; @deprecated, use label-indicator-on
+label-indicator = %name%
+
+; layout-icon-[0-9]+ = layout;icon
+; Assign each layout an icon that will be available as %icon% token for the
+; <label-layout> tag. The part before ';' will try to match %layout% value.
+layout-icon-default = some-icon
+layout-icon-0 = ch;C
+layout-icon-1 = us;U
+
+; indicator-icon-[0-9]+ = indicator;off icon;on icon
+; Provides the content of the %icon% token in label-indicator-*
+indicator-icon-default = 
+indicator-icon-0 = caps lock;-CL;+CL
+indicator-icon-1 = scroll lock;;+SL
+indicator-icon-2 = num lock;-NL;+NL
+
+; Replaces label-indicator
+; Available tokens:
+;   %name%
+;   %icon%
+; Default: %name%
+label-indicator-on = +%name%
+; Available tokens:
+;   %name%
+;   %icon%
+; Default: (none)
+label-indicator-off = -%name%
+
+; Replaces label-indicator-* if for specific indicators
+; Available tokens:
+;   %name%
+;   %icon%
+label-indicator-on-capslock = 
+label-indicator-off-capslock = 
+label-indicator-on-numlock = 
+label-indicator-off-numlock = 
+label-indicator-on-scrolllock = 
+label-indicator-off-scrolllock =
